@@ -1,6 +1,6 @@
-import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'utils/constants/colors.dart';
 import 'utils/constants/text_strings.dart';
@@ -10,11 +10,13 @@ import 'utils/theme/theme.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
-  static const String _productUrl = 'https://codingwitht.com/ecommerce-app-with-admin-panel/';
+  static final Uri _productUri = Uri.parse('https://codingwitht.com/ecommerce-app-with-admin-panel/');
 
-  void _openProductPage() {
-    // opens in a new browser tab
-    html.window.open(_productUrl, '_blank');
+  Future<void> _openProductPage() async {
+    // On web this will open a new tab automatically
+    if (!await launchUrl(_productUri, webOnlyWindowName: '_blank')) {
+      debugPrint('Could not launch $_productUri');
+    }
   }
 
   @override
@@ -36,7 +38,7 @@ class App extends StatelessWidget {
               children: [
                 const Text(
                   '🎉 Starter Kit Ready! 🎉\n\n'
-                      'Your project structure is set up and running. Happy coding!',
+                  'Your project structure is set up and running. Happy coding!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
